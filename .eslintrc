@@ -1,0 +1,44 @@
+{
+  parserOptions: {
+    ecmaVersion: 5
+  },
+
+  extends: [
+    'eslint:recommended',
+    'airbnb-base/legacy'
+  ],
+
+  rules: {
+    // airbnb style overrides
+    eqeqeq: ['error', 'allow-null'],
+    strict: [2, 'global'],
+    'no-trailing-spaces': 2,
+    'space-before-function-paren': [2, 'never'],
+
+    // We're significantly more permissive
+    'func-names': 0,
+    'max-len': 0,
+    'no-nested-ternary': 0,
+    'comma-dangle': 0,
+    'no-underscore-dangle': 0,
+    'no-param-reassign': 0,
+    'vars-on-top': 0,
+    'default-case': 0,
+    'no-else-return': 0,
+    'no-cond-assign': [2, 'except-parens'],
+    'no-use-before-define': [2, { functions: false, classes: true }],
+    'no-shadow': 0,
+    'newline-per-chained-call': 0,
+    'new-cap': 0,
+    'one-var': 0,
+    'one-var-declaration-per-line': 0,
+    'radix': 0,
+    'block-scoped-var': 0,  // Because we don't have let, sometimes
+                            // we use var as let
+    'quote-props': 0,  // We sometimes quotes props when the
+                       // props are important as string values (e.g.,
+                       // for use in a <select>)
+    'no-console': 0,
+    'no-extend-native': 0,  // Used for .bindMemoize
+  }
+}

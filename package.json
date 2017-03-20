@@ -1,0 +1,62 @@
+{
+  "name": "react-regexr",
+  "version": "0.1.0",
+  "description": "A React wrapper for the Regex editor part of RegExr (http://www.regexr.com/)",
+  "main": "src/Index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pxpeterxu/react-regexr.git"
+  },
+  "keywords": [
+    "regex",
+    "editor",
+    "regexr"
+  ],
+  "author": "Myrtlelime Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pxpeterxu/react-regexr/issues"
+  },
+  "homepage": "https://github.com/pxpeterxu/react-regexr#readme",
+  "dependencies": {
+    "codemirror": "~5",
+    "react": ">=0.14",
+    "react-addons-pure-render-mixin": ">=0.14",
+    "react-codemirror": "~0.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-es2015-template-literals": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.2",
+    "css-loader": "^0.27.3",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.10.3",
+    "eslint-plugin-jsx-a11y": "^1.5.5",
+    "eslint-plugin-react": "^5.2.2",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "file-loader": "^0.10.1",
+    "gulp": "^3.9.0",
+    "gulp-cached": "^1.1.0",
+    "gulp-eslint": "^2.1.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.1.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-watch": "^4.3.5",
+    "minifyify": "^7.3.2",
+    "node-sass": "^4.5.0",
+    "react-dom": "^15.4.2",
+    "run-sequence": "^1.1.5",
+    "sass-loader": "^6.0.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0",
+    "webpack": "^2.2.1"
+  }
+}

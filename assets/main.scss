@@ -1,0 +1,7 @@
+@import "../node_modules/codemirror/lib/codemirror";
+
+@import "../node_modules/regexr/scss/settings";
+@import "./utilities";  // Excerpted utilties
+@import "../node_modules/regexr/scss/tooltips";
+@import "../node_modules/regexr/scss/codemirror";
+@import "./docview";    // Excerpted docview
