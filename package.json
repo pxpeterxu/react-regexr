@@ -2,7 +2,10 @@
   "name": "react-regexr",
   "version": "0.1.0",
   "description": "A React wrapper for the Regex editor part of RegExr (http://www.regexr.com/)",
-  "main": "src/Index.js",
+  "main": "lib/Index.js",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pxpeterxu/react-regexr.git"
@@ -26,6 +29,7 @@
     "regexr": "pxpeterxu/regexr"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
