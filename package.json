@@ -22,7 +22,8 @@
     "codemirror": "~5",
     "react": ">=0.14",
     "react-addons-pure-render-mixin": ">=0.14",
-    "react-codemirror": "~0.3"
+    "react-codemirror": "~0.3",
+    "regexr": "pxpeterxu/regexr"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
