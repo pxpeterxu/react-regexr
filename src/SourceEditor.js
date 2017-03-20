@@ -17,7 +17,9 @@ var SourceEditor = React.createClass({
   mixins: [PureRenderMixin],
 
   propTypes: {
-    expression: React.PropTypes.string,
+    pattern: React.PropTypes.string,
+    flags: React.PropTypes.string,
+
     text: React.PropTypes.string.isRequired,
     onTextChange: React.PropTypes.func.isRequired,
     containerProps: React.PropTypes.object,
@@ -78,21 +80,25 @@ var SourceEditor = React.createClass({
 
   /**
    * Get the matches given the current regex (from
-   * props.expression) and text
+   * props.pattern and props.flags) and text
    * @param {String}   text   text to match against
    * @param {function} callback  callback that gets called with
    *                             (error, matches)
    */
-  getMatches: function(expression, text, callback) {
+  getMatches: function(text, callback) {
     // 1. Validate with lexing
-    var lexer = this._exprLexer;
-    lexer.parse(expression);
+    var pattern = this.props.pattern;
+    var flags = this.props.flags;
 
-    var regex = RegexUtils.getRegex(expression);
+    var regex = null;
+    try {
+      regex = new RegExp(pattern, flags);
+    } catch (e) {
+      console.error(e.stack);
+    }
+
     if (!regex) {
       callback('invalid');
-    } else if (lexer.errors.length !== 0) {
-      callback(lexer.errors.join('; '));
     } else {
       // To prevent regex DDoS, RegExr offloads to a
       // Web Worker
@@ -102,10 +108,9 @@ var SourceEditor = React.createClass({
 
   redraw: function(text) {
     text = text || this.props.text;
-    var expression = this.props.expression;
 
     // Redraw source highlights
-    this.getMatches(expression, text, function(error, matches) {
+    this.getMatches(text, function(error, matches) {
       if (error) {
         console.error(error);
       }

@@ -9,6 +9,42 @@
 	height: 2em;
 }
 
+/*   EXPRESSION UI   */
+.regexr-expression {
+	width: 100%;
+	display: table;
+
+	font-family: $monospace;
+
+	& > * {
+		display: table-cell;
+		vertical-align: top;
+	}
+
+	& > .regexr-left, & > .regexr-right {
+		padding: 4px 0;
+		line-height: 24px;
+	}
+
+	& > .regexr-left {
+		width: 15px;
+	}
+
+	& > .regexr-right {
+		text-align: right;
+		width: 80px;
+	}
+}
+
+.regexr-flag-link {
+	text-decoration: none;
+	cursor: pointer;
+	color: darken($theme-color, 20%);
+	&:hover {
+		color: lighten($theme-color, 5%);
+	}
+}
+
 /* Syntax highlighting */
 .exp-char {
 	color: black;

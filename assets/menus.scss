@@ -1,0 +1,17 @@
+/* Excerpted from scss/menus.scss */
+.regexr-menu {
+	@extend %user-select-none;
+
+	display: none;
+	cursor: default;
+
+	header {
+		font-weight: bold;
+		display: block;
+		color: $title-bg;
+		font-family: $sans-serif;
+	}
+
+  line-height: 1.75rem;
+  min-width: 10rem;
+}

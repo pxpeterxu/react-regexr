@@ -11,7 +11,8 @@ var MainPage = React.createClass({
 
   getInitialState: function() {
     return {
-      expression: '/([A-Z])\\w+/g',
+      pattern: '([A-Z])\\w+',
+      flags: 'g',
       text: [
         'Welcome to RegExr v2.1 by gskinner.com, proudly hosted by Media Temple!',
         '',
@@ -30,24 +31,31 @@ var MainPage = React.createClass({
     };
   },
 
-  handleExpressionChange: function(e) {
-    var value = e.target ? e.target.value : e;
-    this.setState({ expression: value });
+  handlePatternChange: function(value) {
+    this.setState({ pattern: value });
   },
 
-  handleTextChange: function(e) {
-    var value = e.target ? e.target.value : e;
+  handleFlagsChange: function(value) {
+    this.setState({ flags: value });
+  },
+
+  handleTextChange: function(value) {
     this.setState({ text: value });
   },
 
   render: function() {
-    var expression = this.state.expression;
+    var pattern = this.state.pattern;
     var text = this.state.text;
+    var flags = this.state.flags;
 
     return (<div>
-      <ExpressionEditor expression={expression}
-          onChange={this.handleExpressionChange} />
-      <SourceEditor expression={expression}
+      <ExpressionEditor
+          pattern={pattern}
+          flags={flags}
+          onPatternChange={this.handlePatternChange}
+          onFlagsChange={this.handleFlagsChange} />
+      <SourceEditor pattern={pattern}
+          flags="g"
           onTextChange={this.handleTextChange}
           text={text}
           options={{

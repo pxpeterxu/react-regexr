@@ -1,33 +1,7 @@
 'use strict';
 
-/**
- * Decompose a Javascript regex expression into its
- * parts (pattern and flags)
- * @param {String} expr   expression in the form of /blah/gi
- * @return object with { pattern, flags } key
- */
-function decomposeExpression(expr) {
-  var index = expr.lastIndexOf('/');
-  return {
-    pattern: expr.substring(1, index),
-    flags: expr.substr(index + 1)
-  };
-}
-
-/**
- * Builds a JS regular expression object from the given string
- * @param {String} expr   expression in the form of /blah/gi
- * @return {RegExp} Javascript RegExp object, or undefined if invalid
- */
-function getRegex(expr) {
-  var parts = decomposeExpression(expr);
-
-  try {
-    return new RegExp(parts.pattern, parts.flags);
-  } catch (e) {
-    return undefined;
-  }
-}
+var RegExLexer = require('regexr/js/RegExLexer');
+var lexer = new RegExLexer();
 
 /**
  * Ported from regexr/js/DocView.js; given a list of matches
@@ -54,8 +28,25 @@ function getMatchAt(matches, index, inclusive) {
   return undefined;
 }
 
+/**
+ * Parse only the pattern part of a regex using RegExr's
+ * RegExLexer
+ * @param {String} pattern    pattern part of regx to lex
+ * @return object with:
+ *         - tree: the parsed tree
+ *         - errors: list of errors, if any
+ *         - token: the token
+ */
+function parsePattern(pattern) {
+  var ret = lexer.parse(pattern, 'pattern');
+  return {
+    tree: ret,
+    errors: lexer.errors,
+    token: lexer.token
+  };
+}
+
 module.exports = {
-  decomposeExpression: decomposeExpression,
-  getRegex: getRegex,
-  getMatchAt: getMatchAt
+  getMatchAt: getMatchAt,
+  parsePattern: parsePattern
 };

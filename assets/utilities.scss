@@ -5,3 +5,7 @@
 	-o-#{$name}: #{$argument};
 	#{$name}: #{$argument};
 }
+
+%user-select-none {
+	@include vendor-prefix(user-select, none);
+}
