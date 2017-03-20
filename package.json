@@ -4,7 +4,8 @@
   "description": "A React wrapper for the Regex editor part of RegExr (http://www.regexr.com/)",
   "main": "lib/Index.js",
   "scripts": {
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "dev": "webpack-dev-server --content-base build/"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
   }
 }

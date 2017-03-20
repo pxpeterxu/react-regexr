@@ -9,7 +9,7 @@ module.exports = {
   },
   output: {
     filename: '[name]',
-    path: __dirname + '/dist'
+    path: __dirname + '/build'
   },
   module: {
     loaders: [{
