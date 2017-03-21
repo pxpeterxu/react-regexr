@@ -3,7 +3,8 @@
 var React = require('react');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var Tooltip = require('regexr/js/controls/Tooltip');
+var Overlay = require('react-bootstrap/lib/Overlay');
+var Tooltip = require('./Tooltip');
 
 var FlagsEditor = React.createClass({
   mixins: [PureRenderMixin],
@@ -13,14 +14,12 @@ var FlagsEditor = React.createClass({
     onChange: React.PropTypes.func.isRequired
   },
 
-  componentDidMount: function() {
-    this.flagsTooltip = Tooltip.add(this._flagsButton,
-      this._flagsMenu, { mode: 'press' });
+  getInitialState: function() {
+    return { showMenu: false };
   },
 
-  toggleFlag: function(e) {
+  toggleFlag: function(flag, e) {
     e.preventDefault();
-    var flag = e.target.getAttribute('data-flag');
     var flags = this.props.value;
 
     if (flags.indexOf(flag) === -1) {
@@ -32,40 +31,61 @@ var FlagsEditor = React.createClass({
     this.props.onChange(flags);
   },
 
+  toggleShowMenu: function(e) {
+    e.preventDefault();
+    this.setState({ showMenu: !this.state.showMenu });
+  },
+
+  hideMenu: function() {
+    this.setState({ showMenu: false });
+  },
+
   render: function() {
     var flags = this.props.value;
+    var showMenu = this.state.showMenu;
+
     function hasFlag(char) {
       return flags.indexOf(char) !== -1;
     }
 
-    return (<div>
-      <div>
-        <a className="regexr-flag-link"
-            ref={function(elem) { this._flagsButton = elem; }.bind(this)}>
-          /{(flags + '\u00a0\u00a0\u00a0').substr(0, 3)} ▼
-        </a>
-      </div>
-      <div className="regexr-menu"
-          ref={function(elem) { this._flagsMenu = elem; }.bind(this)}>
+    var tooltip = (<Tooltip id="regexr-flags-menu">
+      <div className="regexr regexr-menu">
         <header>
           Expression Flags
         </header>
         <hr />
-        <a href="#ignoreCase" className="check" data-flag="i"
-            onClick={this.toggleFlag}>
+        <a href="#ignoreCase" className="check"
+            onClick={this.toggleFlag.bind(this, 'i')}>
           {hasFlag('i') ? '☑' : '☐'} ignore case <code>(i)</code>
         </a>
         <br />
-        <a href="#global" className="check" data-flag="g"
-            onClick={this.toggleFlag}>
+        <a href="#global" className="check"
+            onClick={this.toggleFlag.bind(this, 'g')}>
           {hasFlag('g') ? '☑' : '☐'} global (get all matches) <code>(g)</code>
         </a>
         <br />
-        <a href="#multiLine" className="check" data-flag="m"
-            onClick={this.toggleFlag}>
+        <a href="#multiLine" className="check"
+            onClick={this.toggleFlag.bind(this, 'm')}>
           {hasFlag('m') ? '☑' : '☐'} multiline <code>(m)</code>
         </a>
       </div>
+    </Tooltip>);
+
+    return (<div className="regexr">
+      <a className="regexr-flag-link"
+          ref={function(elem) { this._flagsButton = elem; }.bind(this)}
+          onClick={this.toggleShowMenu}>
+        /{(flags + '\u00a0\u00a0\u00a0').substr(0, 3)} ▼
+      </a>
+
+      <Overlay rootClose
+          show={showMenu}
+          onHide={this.hideMenu}
+          placement="left"
+          container={this}
+          target={function() { return this._flagsButton; }.bind(this)}>
+        {tooltip}
+      </Overlay>
     </div>);
   }
 });

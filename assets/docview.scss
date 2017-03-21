@@ -36,12 +36,16 @@
 	}
 }
 
+.CodeMirror pre.CodeMirror-placeholder { color: $grey; }
+.regexr-grey { color: $grey };
+
 .regexr-flag-link {
 	text-decoration: none;
 	cursor: pointer;
 	color: darken($theme-color, 20%);
 	&:hover {
 		color: lighten($theme-color, 5%);
+		text-decoration: none;
 	}
 }
 

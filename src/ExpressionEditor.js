@@ -27,7 +27,7 @@ var ExpressionEditor = React.createClass({
   },
 
   render: function() {
-    return (<div className="regexr-expression">
+    return (<div className="regexr regexr-expression">
       <div className="regexr-left">/</div>
       <div>
         <PatternEditor

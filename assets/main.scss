@@ -4,13 +4,12 @@
 // Avoid need for extra fonts
 $monospace-font: monaco, Consolas, "Lucida Console", monospace !default;
 $monospace: $monospace-font;
-.blah-blah {
-  font-family: $monospace;
-}
 
 @import "./utilities";  // Excerpted utilties
+
 @import "../node_modules/regexr/scss/tooltips";
 @import "../node_modules/regexr/scss/codemirror";
 @import "./docview";    // Excerpted docview
 @import "./menus";      // Excerpted menus
 @import "./tags";       // Excerpted tags
+@import "./tooltips";   // Using react-bootstrap/Overlay

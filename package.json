@@ -26,6 +26,7 @@
     "codemirror": "~5",
     "react": ">=0.14",
     "react-addons-pure-render-mixin": ">=0.14",
+    "react-bootstrap": ">=0.29",
     "react-codemirror": "~0.3",
     "regexr": "pxpeterxu/regexr"
   },

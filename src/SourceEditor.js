@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 var CodeMirror = require('react-codemirror');
 
@@ -21,11 +22,12 @@ var SourceEditor = React.createClass({
     flags: React.PropTypes.string,
 
     text: React.PropTypes.string.isRequired,
-    onTextChange: React.PropTypes.func.isRequired,
-    containerProps: React.PropTypes.object,
-    // Extra props for container div
-    codeMirrorProps: React.PropTypes.object,
-    // Extra props for <CodeMirror>
+    onTextChange: React.PropTypes.func,
+    // If omitted, text will be readOnly
+
+    containerStyle: React.PropTypes.object,
+    // Extra style for container div
+
     width: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number
@@ -49,7 +51,15 @@ var SourceEditor = React.createClass({
   componentDidMount: function() {
     this._exprLexer = new RegExLexer();
 
-    var cm = this._cmElem.getCodeMirror();
+    var cmElem = this._cmElem;
+
+    // We need some way of styling width/height
+    // of this for sizing the cmDiv to 100%
+    var cmDiv = ReactDOM.findDOMNode(cmElem);
+    cmDiv.style.width = this.props.width || '100%';
+    cmDiv.style.height = this.props.height || 'auto';
+
+    var cm = cmElem.getCodeMirror();
     cm.setSize(this.props.width, this.props.height);
 
     var options = this.props.options || {};
@@ -91,10 +101,13 @@ var SourceEditor = React.createClass({
     var flags = this.props.flags;
 
     var regex = null;
-    try {
-      regex = new RegExp(pattern, flags);
-    } catch (e) {
-      console.error(e.stack);
+    if (pattern) {
+      // Don't allow empty regex: guaranteed infinite loop
+      try {
+        regex = new RegExp(pattern, flags);
+      } catch (e) {
+        console.error(e.stack);
+      }
     }
 
     if (!regex) {
@@ -119,7 +132,7 @@ var SourceEditor = React.createClass({
       var hoverY = this.state.hoverY;
       var hoverMatch = null;
 
-      if (hoverX && hoverY) {
+      if (!error && hoverX && hoverY) {
         var cm = this._cmElem.getCodeMirror();
         // Check what index character we're hovering over
         var index = CMUtils.getCharIndexAt(cm, hoverX,
@@ -170,14 +183,18 @@ var SourceEditor = React.createClass({
   render: function() {
     var text = this.props.text;
     var options = this.props.options;
-    var containerProps = this.props.containerProps;
-    var codeMirrorProps = this.props.codeMirrorProps;
+    var containerStyle = this.props.containerStyle;
 
-    return (<div {...containerProps}>
+    var width = this.props.width || '100%';
+    var height = this.props.height || 'auto';
+    var style = { width: width, height: height };
+
+    return (<div style={Object.assign(style, containerStyle)}>
       <canvas className="regexr-source-canvas" width="1" height="1"
           ref={function(elem) { this._sourceCanvas = elem; }.bind(this)}></canvas>
 
       <div className="regexr-source-measure"
+          style={style}
           ref={function(elem) { this._sourceMeasure = elem; }.bind(this)}>
         <CodeMirror
             className="regexr-source-editor"
@@ -185,11 +202,11 @@ var SourceEditor = React.createClass({
             value={text}
             options={Object.assign({
               tabSize: 2,
-              indentWithTabs: false
+              indentWithTabs: false,
+              readOnly: !this.props.onTextChange
             }, options)}
             onScroll={this.handleCMScroll}
-            ref={function(elem) { this._cmElem = elem; }.bind(this)}
-            {...codeMirrorProps} />
+            ref={function(elem) { this._cmElem = elem; }.bind(this)} />
       </div>
     </div>);
   }
