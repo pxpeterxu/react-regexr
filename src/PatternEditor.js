@@ -26,7 +26,9 @@ var PatternEditor = React.createClass({
     ])   // Defaults to auto
   },
 
-  initializeCM: function(elem) {
+  componentDidMount: function() {
+    var elem = this._cmElem;
+
     var cm = elem.getCodeMirror();
     var width = this.props.width || '100%';
     var height = this.props.height || 'auto';
@@ -69,7 +71,7 @@ var PatternEditor = React.createClass({
             placeholder: '(Type a regular expression)',
             lineWrapping: true
           }}
-          ref={this.initializeCM} />
+          ref={function(elem) { this._cmElem = elem; }.bind(this)} />
     );
   }
 });

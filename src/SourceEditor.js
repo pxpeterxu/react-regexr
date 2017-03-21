@@ -39,7 +39,13 @@ var SourceEditor = React.createClass({
 
     options: React.PropTypes.object,
     // Additional options for the CodeMirror editor
+
+    onViewportChange: React.PropTypes.func,
+    // A listener to see which matches are visible
   },
+
+  // Using this as a ref, you can also use:
+  // - scrollToMatch: scrolls to the nth match
 
   getInitialState: function() {
     return {
@@ -94,6 +100,7 @@ var SourceEditor = React.createClass({
    * @param {String}   text   text to match against
    * @param {function} callback  callback that gets called with
    *                             (error, matches)
+   *
    */
   getMatches: function(text, callback) {
     // 1. Validate with lexing
@@ -106,7 +113,7 @@ var SourceEditor = React.createClass({
       try {
         regex = new RegExp(pattern, flags);
       } catch (e) {
-        console.error(e.stack);
+        // Invalid regexp
       }
     }
 
@@ -124,10 +131,6 @@ var SourceEditor = React.createClass({
 
     // Redraw source highlights
     this.getMatches(text, function(error, matches) {
-      if (error) {
-        console.error(error);
-      }
-
       var hoverX = this.state.hoverX;
       var hoverY = this.state.hoverY;
       var hoverMatch = null;
@@ -135,8 +138,7 @@ var SourceEditor = React.createClass({
       if (!error && hoverX && hoverY) {
         var cm = this._cmElem.getCodeMirror();
         // Check what index character we're hovering over
-        var index = CMUtils.getCharIndexAt(cm, hoverX,
-          hoverY + window.pageYOffset);
+        var index = CMUtils.getCharIndexAt(cm, hoverX, hoverY);
 
         // See which match, if any, we're hovering over
         hoverMatch = index != null ? RegexUtils.getMatchAt(matches, index) : null;
@@ -144,7 +146,7 @@ var SourceEditor = React.createClass({
         if (hoverMatch) {
           var rect = (index != null) && CMUtils.getCharRect(cm, index);
           if (rect) {
-            rect.right = rect.left = event.clientX;
+            rect.right = rect.left = hoverX;
           }
           this.sourceTooltip.show(Docs.forMatch(hoverMatch), rect);
         } else {
@@ -154,7 +156,65 @@ var SourceEditor = React.createClass({
 
       this.sourceHighlighter.draw(error ? null : matches,
         hoverMatch, null);
+
+      this.sendOnViewportChange(matches);
     }.bind(this));
+  },
+
+  /**
+   * Send a call to the onViewportChange handler on scrolls,
+   * changes in the content, etc.
+   * @return { from, to, prevMatch, nextMatch }
+   *         where from, to are both character counts, and
+   *         prevMatch, nextMatch are the indexes of the
+   *         first match before and after the visible section
+   */
+  sendOnViewportChange: function(matches) {
+    if (!this.props.onViewportChange) return;
+
+    var cm = this._cmElem.getCodeMirror();
+
+    var viewport = cm.getScrollInfo();
+    var left = viewport.left;
+    var top = viewport.top;
+    var right = viewport.left + viewport.clientWidth;
+    var bottom = viewport.top + viewport.clientHeight;
+    var firstChar = cm.indexFromPos(cm.coordsChar({ left: left, top: top }, 'local'));
+    var lastChar = cm.indexFromPos(cm.coordsChar({ left: right, top: bottom }, 'local'));
+
+    var processMatches = function processMatches(matches) {
+      var prevMatch = null;
+      var nextMatch = null;
+
+      if (matches) {
+        for (var i = 0; i !== matches.length; i++) {
+          var match = matches[i];
+          if (match.end < firstChar) {
+            prevMatch = i;
+          } else if (match.index > lastChar) {
+            nextMatch = i;
+            break;
+          }
+        }
+      }
+
+      var ret = {
+        firstChar: firstChar,
+        lastChar: lastChar,
+        prevMatch: prevMatch,
+        nextMatch: nextMatch
+      };
+
+      this.props.onViewportChange(ret);
+    }.bind(this);
+
+    if (matches) {
+      processMatches(matches);
+    } else {
+      this.getMatches(this.props.text, function(error, matches) {
+        processMatches(matches);
+      });
+    }
   },
 
   handleCMChange: function(text) {
@@ -166,7 +226,9 @@ var SourceEditor = React.createClass({
   },
 
   componentDidUpdate: function() {
-    this.redraw();
+    // Redraw with slight delay so that it's
+    // based on new content
+    setTimeout(this.redraw, 1);
   },
 
   handleMouseMove: function(event) {
@@ -178,6 +240,25 @@ var SourceEditor = React.createClass({
 
   handleMouseOut: function() {
     this.setState({ hoverX: null, hoverY: null });
+  },
+
+  /**
+   * Scrolls to the nth match
+   * (does nothing if the nth match doesn't exist)
+   * @param {int} matchIndex    index of the match
+   */
+  scrollToMatch: function(matchIndex) {
+    var cm = this._cmElem.getCodeMirror();
+    this.getMatches(this.props.text, function(error, matches) {
+      var match = matches[matchIndex];
+
+      if (match) {
+        cm.scrollIntoView({
+          from: cm.posFromIndex(match.index),
+          to: cm.posFromIndex(match.end)
+        });
+      }
+    });
   },
 
   render: function() {

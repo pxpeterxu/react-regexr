@@ -13,6 +13,10 @@ var MainPage = React.createClass({
     return {
       pattern: '([A-Z])\\w+',
       flags: 'g',
+
+      prevMatch: null,
+      nextMatch: null,
+
       text: [
         'Welcome to RegExr v2.1 by gskinner.com, proudly hosted by Media Temple!',
         '',
@@ -43,6 +47,21 @@ var MainPage = React.createClass({
     this.setState({ text: value });
   },
 
+  handleViewportChange: function(viewport) {
+    this.setState({
+      nextMatch: viewport.nextMatch,
+      prevMatch: viewport.prevMatch
+    });
+  },
+
+  scrollToPrev: function() {
+    this._sourceEditor.scrollToMatch(this.state.prevMatch);
+  },
+
+  scrollToNext: function() {
+    this._sourceEditor.scrollToMatch(this.state.nextMatch);
+  },
+
   render: function() {
     var pattern = this.state.pattern;
     var text = this.state.text;
@@ -60,7 +79,12 @@ var MainPage = React.createClass({
           text={text}
           options={{
             lineWrapping: true
-          }} />
+          }}
+          onViewportChange={this.handleViewportChange}
+          ref={function(elem) { this._sourceEditor = elem; }.bind(this)} />
+
+      <button onClick={this.scrollToPrev} type="button">Previous match</button>
+      <button onClick={this.scrollToNext} type="button">Next match</button>
     </div>);
   }
 });
