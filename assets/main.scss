@@ -1,14 +1,14 @@
 @import "../node_modules/codemirror/lib/codemirror";
 
-@import "../node_modules/regexr/scss/settings";
+@import "../node_modules/regexr-site/scss/settings";
 // Avoid need for extra fonts
 $monospace-font: monaco, Consolas, "Lucida Console", monospace !default;
 $monospace: $monospace-font;
 
 @import "./utilities";  // Excerpted utilties
 
-@import "../node_modules/regexr/scss/tooltips";
-@import "../node_modules/regexr/scss/codemirror";
+@import "../node_modules/regexr-site/scss/tooltips";
+@import "../node_modules/regexr-site/scss/codemirror";
 @import "./docview";    // Excerpted docview
 @import "./menus";      // Excerpted menus
 @import "./tags";       // Excerpted tags

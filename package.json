@@ -28,7 +28,7 @@
     "react-addons-pure-render-mixin": ">=0.14",
     "react-bootstrap": ">=0.29",
     "react-codemirror": "~0.3",
-    "regexr": "pxpeterxu/regexr"
+    "regexr-site": "pxpeterxu/regexr"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

@@ -5,12 +5,12 @@ var ReactDOM = require('react-dom');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 var CodeMirror = require('react-codemirror');
 
-var SourceHighlighter = require('regexr/js/SourceHighlighter');
-var RegExLexer = require('regexr/js/RegExLexer');
-var RegExJS = require('regexr/js/RegExJS');
-var Docs = require('regexr/js/utils/Docs');
-var Tooltip = require('regexr/js/controls/Tooltip');
-var CMUtils = require('regexr/js/utils/CMUtils');
+var SourceHighlighter = require('regexr-site/js/SourceHighlighter');
+var RegExLexer = require('regexr-site/js/RegExLexer');
+var RegExJS = require('regexr-site/js/RegExJS');
+var Docs = require('regexr-site/js/utils/Docs');
+var Tooltip = require('regexr-site/js/controls/Tooltip');
+var CMUtils = require('regexr-site/js/utils/CMUtils');
 
 var RegexUtils = require('./RegexUtils');
 
