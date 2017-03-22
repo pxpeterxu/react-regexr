@@ -18,8 +18,16 @@ var FlagsEditor = React.createClass({
     return { showMenu: false };
   },
 
+  componentDidMount: function() {
+    this._keydownListener = document.addEventListener('keydown', this.handleKeyDown);
+  },
+
+  componentWillUnmount: function() {
+    document.removeEventListener('keydown', this._keydownListener);
+  },
+
   toggleFlag: function(flag, e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     var flags = this.props.value;
 
     if (flags.indexOf(flag) === -1) {
@@ -38,6 +46,14 @@ var FlagsEditor = React.createClass({
 
   hideMenu: function() {
     this.setState({ showMenu: false });
+  },
+
+  handleKeyDown: function(e) {
+    if (this.state.showMenu) {
+      if (e.key && 'gim'.indexOf(e.key) !== -1) {
+        this.toggleFlag(e.key);
+      }
+    }
   },
 
   render: function() {
