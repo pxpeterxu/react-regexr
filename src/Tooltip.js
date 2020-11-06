@@ -1,14 +1,16 @@
 'use strict';
 
 var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var Tooltip = React.createClass({
-  mixins: [PureRenderMixin],
-
   propTypes: {
     children: React.PropTypes.node.isRequired,
     className: React.PropTypes.string,
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   },
 
   render: function() {
@@ -20,7 +22,7 @@ var Tooltip = React.createClass({
         {children}
       </div>
     );
-  }
+  },
 });
 
 module.exports = Tooltip;

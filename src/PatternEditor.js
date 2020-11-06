@@ -1,8 +1,8 @@
 'use strict';
 
 var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
 var CodeMirror = require('react-codemirror');
+var shallowCompare = require('react-addons-shallow-compare');
 require('codemirror/addon/display/placeholder');
 
 var ExpressionHighlighter = require('regexr-site/js/ExpressionHighlighter');
@@ -10,8 +10,6 @@ var ExpressionHover = require('regexr-site/js/ExpressionHover');
 var RegexUtils = require('./RegexUtils');
 
 var PatternEditor = React.createClass({
-  mixins: [PureRenderMixin],
-
   propTypes: {
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired,
@@ -56,6 +54,10 @@ var PatternEditor = React.createClass({
     this.updateCodeMirror(this.props.value);
   },
 
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  },
+
   render: function() {
     var value = this.props.value;
 
@@ -73,7 +75,7 @@ var PatternEditor = React.createClass({
           }}
           ref={function(elem) { this._cmElem = elem; }.bind(this)} />
     );
-  }
+  },
 });
 
 module.exports = PatternEditor;

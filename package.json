@@ -24,9 +24,9 @@
   "homepage": "https://github.com/pxpeterxu/react-regexr#readme",
   "dependencies": {
     "codemirror": "~5",
-    "react": ">=0.14",
-    "react-addons-pure-render-mixin": ">=0.14",
-    "react-bootstrap": ">=0.29",
+    "react": "^15.4.2",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-bootstrap": "0.29",
     "react-codemirror": "~0.3",
     "regexr-site": "pxpeterxu/regexr"
   },

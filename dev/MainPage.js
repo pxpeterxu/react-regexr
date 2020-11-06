@@ -1,14 +1,12 @@
 'use strict';
 
 var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var ExpressionEditor = require('../src/ExpressionEditor');
 var SourceEditor = require('../src/SourceEditor');
 
 var MainPage = React.createClass({
-  mixins: [PureRenderMixin],
-
   getInitialState: function() {
     return {
       pattern: '([A-Z])\\w+',
@@ -33,6 +31,10 @@ var MainPage = React.createClass({
         'https://mediatemple.net'
       ].join('\n')
     };
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   },
 
   handlePatternChange: function(value) {

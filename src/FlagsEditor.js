@@ -1,14 +1,12 @@
 'use strict';
 
 var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var Overlay = require('react-bootstrap/lib/Overlay');
 var Tooltip = require('./Tooltip');
 
 var FlagsEditor = React.createClass({
-  mixins: [PureRenderMixin],
-
   propTypes: {
     value: React.PropTypes.string.isRequired,
     onChange: React.PropTypes.func.isRequired
@@ -54,6 +52,10 @@ var FlagsEditor = React.createClass({
         this.toggleFlag(e.key);
       }
     }
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   },
 
   render: function() {
@@ -103,7 +105,7 @@ var FlagsEditor = React.createClass({
         {tooltip}
       </Overlay>
     </div>);
-  }
+  },
 });
 
 module.exports = FlagsEditor;

@@ -1,14 +1,12 @@
 'use strict';
 
 var React = require('react');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var PatternEditor = require('./PatternEditor');
 var FlagsEditor = require('./FlagsEditor');
 
 var ExpressionEditor = React.createClass({
-  mixins: [PureRenderMixin],
-
   propTypes: {
     pattern: React.PropTypes.string.isRequired,
     flags: React.PropTypes.string.isRequired,
@@ -24,6 +22,10 @@ var ExpressionEditor = React.createClass({
       React.PropTypes.string,
       React.PropTypes.number
     ])   // Defaults to auto
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   },
 
   render: function() {
@@ -42,7 +44,7 @@ var ExpressionEditor = React.createClass({
             onChange={this.props.onFlagsChange} />
       </div>
     </div>);
-  }
+  },
 });
 
 module.exports = ExpressionEditor;

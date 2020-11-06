@@ -2,8 +2,8 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
 var CodeMirror = require('react-codemirror');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var SourceHighlighter = require('regexr-site/js/SourceHighlighter');
 var RegExLexer = require('regexr-site/js/RegExLexer');
@@ -15,8 +15,6 @@ var CMUtils = require('regexr-site/js/utils/CMUtils');
 var RegexUtils = require('./RegexUtils');
 
 var SourceEditor = React.createClass({
-  mixins: [PureRenderMixin],
-
   propTypes: {
     pattern: React.PropTypes.string,
     flags: React.PropTypes.string,
@@ -261,6 +259,10 @@ var SourceEditor = React.createClass({
     });
   },
 
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  },
+
   render: function() {
     var text = this.props.text;
     var options = this.props.options;
@@ -290,7 +292,7 @@ var SourceEditor = React.createClass({
             ref={function(elem) { this._cmElem = elem; }.bind(this)} />
       </div>
     </div>);
-  }
+  },
 });
 
 module.exports = SourceEditor;
