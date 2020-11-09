@@ -1,9 +1,13 @@
+/** @format */
+
 'use strict';
+
+var PropTypes = require('prop-types');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
 var CodeMirror = require('react-codemirror');
+var shallowCompare = require('react-addons-shallow-compare');
 
 var SourceHighlighter = require('regexr-site/js/SourceHighlighter');
 var RegExLexer = require('regexr-site/js/RegExLexer');
@@ -14,47 +18,16 @@ var CMUtils = require('regexr-site/js/utils/CMUtils');
 
 var RegexUtils = require('./RegexUtils');
 
-var SourceEditor = React.createClass({
-  mixins: [PureRenderMixin],
-
-  propTypes: {
-    pattern: React.PropTypes.string,
-    flags: React.PropTypes.string,
-
-    text: React.PropTypes.string.isRequired,
-    onTextChange: React.PropTypes.func,
-    // If omitted, text will be readOnly
-
-    containerStyle: React.PropTypes.object,
-    // Extra style for container div
-
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
-    ]),
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
-    ]),
-
-    options: React.PropTypes.object,
-    // Additional options for the CodeMirror editor
-
-    onViewportChange: React.PropTypes.func,
-    // A listener to see which matches are visible
-  },
-
+class SourceEditor extends React.Component {
   // Using this as a ref, you can also use:
   // - scrollToMatch: scrolls to the nth match
 
-  getInitialState: function() {
-    return {
-      hoverX: null,
-      hoverY: null
-    };
-  },
+  state = {
+    hoverX: null,
+    hoverY: null,
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     this._exprLexer = new RegExLexer();
 
     var cmElem = this._cmElem;
@@ -80,19 +53,19 @@ var SourceEditor = React.createClass({
     this.resizeCanvas();
 
     this._resizeListener = window.addEventListener('resize', this.resizeCanvas);
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener(this._resizeListener);
-  },
+  }
 
-  resizeCanvas: function() {
+  resizeCanvas = () => {
     var rect = this._sourceMeasure.getBoundingClientRect();
     this._sourceCanvas.width = rect.right - rect.left || 0;
     this._sourceCanvas.height = rect.bottom - rect.top || 0;
 
     this.redraw();
-  },
+  };
 
   /**
    * Get the matches given the current regex (from
@@ -102,7 +75,7 @@ var SourceEditor = React.createClass({
    *                             (error, matches)
    *
    */
-  getMatches: function(text, callback) {
+  getMatches = (text, callback) => {
     // 1. Validate with lexing
     var pattern = this.props.pattern;
     var flags = this.props.flags;
@@ -124,42 +97,44 @@ var SourceEditor = React.createClass({
       // Web Worker
       RegExJS.match(regex, text, callback);
     }
-  },
+  };
 
-  redraw: function(text) {
+  redraw = (text) => {
     text = text || this.props.text;
 
     // Redraw source highlights
-    this.getMatches(text, function(error, matches) {
-      var hoverX = this.state.hoverX;
-      var hoverY = this.state.hoverY;
-      var hoverMatch = null;
+    this.getMatches(
+      text,
+      function (error, matches) {
+        var hoverX = this.state.hoverX;
+        var hoverY = this.state.hoverY;
+        var hoverMatch = null;
 
-      if (!error && hoverX && hoverY) {
-        var cm = this._cmElem.getCodeMirror();
-        // Check what index character we're hovering over
-        var index = CMUtils.getCharIndexAt(cm, hoverX, hoverY);
+        if (!error && hoverX && hoverY) {
+          var cm = this._cmElem.getCodeMirror();
+          // Check what index character we're hovering over
+          var index = CMUtils.getCharIndexAt(cm, hoverX, hoverY);
 
-        // See which match, if any, we're hovering over
-        hoverMatch = index != null ? RegexUtils.getMatchAt(matches, index) : null;
+          // See which match, if any, we're hovering over
+          hoverMatch = index != null ? RegexUtils.getMatchAt(matches, index) : null;
 
-        if (hoverMatch) {
-          var rect = (index != null) && CMUtils.getCharRect(cm, index);
-          if (rect) {
-            rect.right = rect.left = hoverX;
+          if (hoverMatch) {
+            var rect = index != null && CMUtils.getCharRect(cm, index);
+            if (rect) {
+              rect.right = rect.left = hoverX;
+            }
+            this.sourceTooltip.show(Docs.forMatch(hoverMatch), rect);
+          } else {
+            this.sourceTooltip.hide();
           }
-          this.sourceTooltip.show(Docs.forMatch(hoverMatch), rect);
-        } else {
-          this.sourceTooltip.hide();
         }
-      }
 
-      this.sourceHighlighter.draw(error ? null : matches,
-        hoverMatch, null);
+        this.sourceHighlighter.draw(error ? null : matches, hoverMatch, null);
 
-      this.sendOnViewportChange(matches);
-    }.bind(this));
-  },
+        this.sendOnViewportChange(matches);
+      }.bind(this)
+    );
+  };
 
   /**
    * Send a call to the onViewportChange handler on scrolls,
@@ -169,7 +144,7 @@ var SourceEditor = React.createClass({
    *         prevMatch, nextMatch are the indexes of the
    *         first match before and after the visible section
    */
-  sendOnViewportChange: function(matches) {
+  sendOnViewportChange = (matches) => {
     if (!this.props.onViewportChange) return;
 
     var cm = this._cmElem.getCodeMirror();
@@ -202,7 +177,7 @@ var SourceEditor = React.createClass({
         firstChar: firstChar,
         lastChar: lastChar,
         prevMatch: prevMatch,
-        nextMatch: nextMatch
+        nextMatch: nextMatch,
       };
 
       this.props.onViewportChange(ret);
@@ -211,57 +186,61 @@ var SourceEditor = React.createClass({
     if (matches) {
       processMatches(matches);
     } else {
-      this.getMatches(this.props.text, function(error, matches) {
+      this.getMatches(this.props.text, function (error, matches) {
         processMatches(matches);
       });
     }
-  },
+  };
 
-  handleCMChange: function(text) {
+  handleCMChange = (text) => {
     this.props.onTextChange(text);
-  },
+  };
 
-  handleCMScroll: function() {
+  handleCMScroll = () => {
     this.redraw();
-  },
+  };
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     // Redraw with slight delay so that it's
     // based on new content
     setTimeout(this.redraw, 1);
-  },
+  }
 
-  handleMouseMove: function(event) {
+  handleMouseMove = (event) => {
     this.setState({
       hoverX: event.clientX,
-      hoverY: event.clientY
+      hoverY: event.clientY,
     });
-  },
+  };
 
-  handleMouseOut: function() {
+  handleMouseOut = () => {
     this.setState({ hoverX: null, hoverY: null });
-  },
+  };
 
   /**
    * Scrolls to the nth match
    * (does nothing if the nth match doesn't exist)
    * @param {int} matchIndex    index of the match
    */
-  scrollToMatch: function(matchIndex) {
+  scrollToMatch = (matchIndex) => {
     var cm = this._cmElem.getCodeMirror();
-    this.getMatches(this.props.text, function(error, matches) {
+    this.getMatches(this.props.text, function (error, matches) {
       var match = matches[matchIndex];
 
       if (match) {
         cm.scrollIntoView({
           from: cm.posFromIndex(match.index),
-          to: cm.posFromIndex(match.end)
+          to: cm.posFromIndex(match.end),
         });
       }
     });
-  },
+  };
 
-  render: function() {
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
+  render() {
     var text = this.props.text;
     var options = this.props.options;
     var containerStyle = this.props.containerStyle;
@@ -270,27 +249,66 @@ var SourceEditor = React.createClass({
     var height = this.props.height || 'auto';
     var style = { width: width, height: height };
 
-    return (<div style={Object.assign(style, containerStyle)}>
-      <canvas className="regexr-source-canvas" width="1" height="1"
-          ref={function(elem) { this._sourceCanvas = elem; }.bind(this)}></canvas>
+    return (
+      <div style={Object.assign(style, containerStyle)}>
+        <canvas
+          className="regexr-source-canvas"
+          width="1"
+          height="1"
+          ref={function (elem) {
+            this._sourceCanvas = elem;
+          }.bind(this)}
+        ></canvas>
 
-      <div className="regexr-source-measure"
+        <div
+          className="regexr-source-measure"
           style={style}
-          ref={function(elem) { this._sourceMeasure = elem; }.bind(this)}>
-        <CodeMirror
+          ref={function (elem) {
+            this._sourceMeasure = elem;
+          }.bind(this)}
+        >
+          <CodeMirror
             className="regexr-source-editor"
             onChange={this.handleCMChange}
             value={text}
-            options={Object.assign({
-              tabSize: 2,
-              indentWithTabs: false,
-              readOnly: !this.props.onTextChange
-            }, options)}
+            options={Object.assign(
+              {
+                tabSize: 2,
+                indentWithTabs: false,
+                readOnly: !this.props.onTextChange,
+              },
+              options
+            )}
             onScroll={this.handleCMScroll}
-            ref={function(elem) { this._cmElem = elem; }.bind(this)} />
+            ref={function (elem) {
+              this._cmElem = elem;
+            }.bind(this)}
+          />
+        </div>
       </div>
-    </div>);
+    );
   }
-});
+}
+
+SourceEditor.propTypes = {
+  pattern: PropTypes.string,
+  flags: PropTypes.string,
+
+  text: PropTypes.string.isRequired,
+  onTextChange: PropTypes.func,
+  // If omitted, text will be readOnly
+
+  containerStyle: PropTypes.object,
+  // Extra style for container div
+
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+  options: PropTypes.object,
+  // Additional options for the CodeMirror editor
+
+  onViewportChange: PropTypes.func,
+  // A listener to see which matches are visible
+};
 
 module.exports = SourceEditor;

@@ -2,38 +2,40 @@
   "name": "react-regexr",
   "version": "0.1.0",
   "description": "A React wrapper for the Regex editor part of RegExr (http://www.regexr.com/)",
-  "main": "lib/Index.js",
-  "scripts": {
-    "build": "babel src -d lib",
-    "dev": "webpack-dev-server --content-base build/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pxpeterxu/react-regexr.git"
-  },
   "keywords": [
     "regex",
     "editor",
     "regexr"
   ],
-  "author": "Myrtlelime Inc.",
-  "license": "MIT",
+  "homepage": "https://github.com/pxpeterxu/react-regexr#readme",
   "bugs": {
     "url": "https://github.com/pxpeterxu/react-regexr/issues"
   },
-  "homepage": "https://github.com/pxpeterxu/react-regexr#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pxpeterxu/react-regexr.git"
+  },
+  "license": "MIT",
+  "author": "Myrtlelime Inc.",
+  "main": "lib/Index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "dev": "webpack-dev-server --content-base build/"
+  },
   "dependencies": {
     "codemirror": "~5",
-    "react": ">=0.14",
-    "react-addons-pure-render-mixin": ">=0.14",
-    "react-bootstrap": ">=0.29",
-    "react-codemirror": "~0.3",
+    "preact": "^10.5.5",
+    "react": "^15.6.2",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-bootstrap": "0.31.5",
+    "react-codemirror": "~1.0.0",
     "regexr-site": "pxpeterxu/regexr"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.4.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babelify": "^7.2.0",
@@ -42,8 +44,10 @@
     "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^1.10.3",
     "eslint-plugin-jsx-a11y": "^1.5.5",
+    "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^5.2.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
@@ -58,7 +62,9 @@
     "gulp-watch": "^4.3.5",
     "minifyify": "^7.3.2",
     "node-sass": "^4.5.0",
-    "react-dom": "^15.4.2",
+    "prettier": "^2.1.2",
+    "prop-types": "^15.7.2",
+    "react-dom": "^15.6.2",
     "run-sequence": "^1.1.5",
     "sass-loader": "^6.0.3",
     "vinyl-buffer": "^1.0.0",
@@ -66,5 +72,8 @@
     "watchify": "^3.7.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.2"
+  },
+  "engines": {
+    "node": ">= 10.x"
   }
 }

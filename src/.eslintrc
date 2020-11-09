@@ -1,41 +1,36 @@
 {
-  parserOptions: {
-    ecmaVersion: 6,  // To allow ...props
-    ecmaFeatures: {
-      jsx: true
+  "parserOptions": {
+    "ecmaVersion": 6, // To allow ...props
+    "ecmaFeatures": {
+      "jsx": true
     }
   },
 
-  env: {
-    browser: true,
-    commonjs: true
+  "env": {
+    "browser": true,
+    "commonjs": true
   },
 
-  globals: {
-    chrome: true,
-    Uint8Array: true,
-    Promise: false  // Allow polyfills
+  "globals": {
+    "chrome": true,
+    "Uint8Array": true,
+    "Promise": false // Allow polyfills
   },
 
-  plugins: [
-    'react'
-  ],
+  "plugins": ["react"],
 
-  extends: [
-    'plugin:react/recommended',
-    'airbnb/rules/react'
-  ],
+  "extends": ["plugin:react/recommended", "airbnb/rules/react"],
 
-  rules: {
+  "rules": {
     // React overrides
-    'react/prefer-es6-class': 0,  // We don't use es6-classes
-    'react/sort-comp': 0,
-    'react/jsx-indent-props': [2, 4],
-    'react/jsx-indent': [2, 2],
-    'react/jsx-boolean-value': 0,  // Allow x={true} or x
-    'react/jsx-closing-bracket-location': [2, 'after-props'],
-    'react/jsx-first-prop-new-line': 0,
-    'react/prefer-stateless-function': 0,  // propTypes is nice to have
-    'react/jsx-no-bind': 0  // Lots of legacy stuff use binds
+    "react/prefer-es6-class": 0, // We don't use es6-classes
+    "react/sort-comp": 0,
+    "react/jsx-indent-props": [2, 4],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-boolean-value": 0, // Allow x={true} or x
+    "react/jsx-closing-bracket-location": [2, "after-props"],
+    "react/jsx-first-prop-new-line": 0,
+    "react/prefer-stateless-function": 0, // propTypes is nice to have
+    "react/jsx-no-bind": 0 // Lots of legacy stuff use binds
   }
 }

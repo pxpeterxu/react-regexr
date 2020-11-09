@@ -1,3 +1,5 @@
+/** @format */
+
 'use strict';
 
 var RegExLexer = require('regexr-site/js/RegExLexer');
@@ -13,7 +15,8 @@ var lexer = new RegExLexer();
  * @return {Object} match if found, undefined if not
  */
 function getMatchAt(matches, index, inclusive) {
-  var match, offset = inclusive ? -1 : 0;
+  var match,
+    offset = inclusive ? -1 : 0;
   for (var i = 0, l = matches.length; i < l; i++) {
     match = matches[i];
     if (match.end < index + offset) {
@@ -42,11 +45,11 @@ function parsePattern(pattern) {
   return {
     tree: ret,
     errors: lexer.errors,
-    token: lexer.token
+    token: lexer.token,
   };
 }
 
 module.exports = {
   getMatchAt: getMatchAt,
-  parsePattern: parsePattern
+  parsePattern: parsePattern,
 };
