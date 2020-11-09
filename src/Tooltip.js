@@ -1,12 +1,14 @@
 'use strict';
 
+var PropTypes = require('prop-types');
+
 var React = require('react');
 var shallowCompare = require('react-addons-shallow-compare');
 
 var Tooltip = React.createClass({
   propTypes: {
-    children: React.PropTypes.node.isRequired,
-    className: React.PropTypes.string,
+    children: PropTypes.node.isRequired,
+    className: PropTypes.string,
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {

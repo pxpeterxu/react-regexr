@@ -1,5 +1,7 @@
 'use strict';
 
+var PropTypes = require('prop-types');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var CodeMirror = require('react-codemirror');
@@ -16,29 +18,29 @@ var RegexUtils = require('./RegexUtils');
 
 var SourceEditor = React.createClass({
   propTypes: {
-    pattern: React.PropTypes.string,
-    flags: React.PropTypes.string,
+    pattern: PropTypes.string,
+    flags: PropTypes.string,
 
-    text: React.PropTypes.string.isRequired,
-    onTextChange: React.PropTypes.func,
+    text: PropTypes.string.isRequired,
+    onTextChange: PropTypes.func,
     // If omitted, text will be readOnly
 
-    containerStyle: React.PropTypes.object,
+    containerStyle: PropTypes.object,
     // Extra style for container div
 
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+    width: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ]),
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+    height: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ]),
 
-    options: React.PropTypes.object,
+    options: PropTypes.object,
     // Additional options for the CodeMirror editor
 
-    onViewportChange: React.PropTypes.func,
+    onViewportChange: PropTypes.func,
     // A listener to see which matches are visible
   },
 

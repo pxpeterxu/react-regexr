@@ -1,5 +1,7 @@
 'use strict';
 
+var PropTypes = require('prop-types');
+
 var React = require('react');
 var shallowCompare = require('react-addons-shallow-compare');
 
@@ -8,8 +10,8 @@ var Tooltip = require('./Tooltip');
 
 var FlagsEditor = React.createClass({
   propTypes: {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
   },
 
   getInitialState: function() {

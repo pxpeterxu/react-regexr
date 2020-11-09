@@ -1,5 +1,7 @@
 'use strict';
 
+var PropTypes = require('prop-types');
+
 var React = require('react');
 var CodeMirror = require('react-codemirror');
 var shallowCompare = require('react-addons-shallow-compare');
@@ -11,16 +13,16 @@ var RegexUtils = require('./RegexUtils');
 
 var PatternEditor = React.createClass({
   propTypes: {
-    value: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
 
-    width: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+    width: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ]),  // Defaults to 100%
-    height: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number
+    height: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
     ])   // Defaults to auto
   },
 
