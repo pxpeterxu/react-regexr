@@ -1,3 +1,5 @@
+/** @format */
+
 'use strict';
 
 var PropTypes = require('prop-types');
@@ -11,19 +13,15 @@ var Tooltip = React.createClass({
     className: PropTypes.string,
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   },
 
-  render: function() {
+  render: function () {
     var children = this.props.children;
     var className = this.props.className || '';
 
-    return (
-      <div className={'regexr regexr-react-tooltip ' + className}>
-        {children}
-      </div>
-    );
+    return <div className={'regexr regexr-react-tooltip ' + className}>{children}</div>;
   },
 });
 

@@ -1,3 +1,5 @@
+/** @format */
+
 'use strict';
 
 var PropTypes = require('prop-types');
@@ -16,36 +18,31 @@ var ExpressionEditor = React.createClass({
     onPatternChange: PropTypes.func.isRequired,
     onFlagsChange: PropTypes.func.isRequired,
 
-    width: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),  // Defaults to 100%
-    height: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ])   // Defaults to auto
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to 100%
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to auto
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   },
 
-  render: function() {
-    return (<div className="regexr regexr-expression">
-      <div className="regexr-left">/</div>
-      <div>
-        <PatternEditor
+  render: function () {
+    return (
+      <div className="regexr regexr-expression">
+        <div className="regexr-left">/</div>
+        <div>
+          <PatternEditor
             value={this.props.pattern}
             onChange={this.props.onPatternChange}
             width={this.props.width}
-            height={this.props.height} />
+            height={this.props.height}
+          />
+        </div>
+        <div className="regexr-right">
+          <FlagsEditor value={this.props.flags} onChange={this.props.onFlagsChange} />
+        </div>
       </div>
-      <div className="regexr-right">
-        <FlagsEditor
-            value={this.props.flags}
-            onChange={this.props.onFlagsChange} />
-      </div>
-    </div>);
+    );
   },
 });
 

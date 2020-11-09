@@ -1,3 +1,5 @@
+/** @format */
+
 'use strict';
 
 var PropTypes = require('prop-types');
@@ -28,14 +30,8 @@ var SourceEditor = React.createClass({
     containerStyle: PropTypes.object,
     // Extra style for container div
 
-    width: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),
-    height: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
     options: PropTypes.object,
     // Additional options for the CodeMirror editor
@@ -47,14 +43,14 @@ var SourceEditor = React.createClass({
   // Using this as a ref, you can also use:
   // - scrollToMatch: scrolls to the nth match
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       hoverX: null,
-      hoverY: null
+      hoverY: null,
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     this._exprLexer = new RegExLexer();
 
     var cmElem = this._cmElem;
@@ -82,11 +78,11 @@ var SourceEditor = React.createClass({
     this._resizeListener = window.addEventListener('resize', this.resizeCanvas);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     window.removeEventListener(this._resizeListener);
   },
 
-  resizeCanvas: function() {
+  resizeCanvas: function () {
     var rect = this._sourceMeasure.getBoundingClientRect();
     this._sourceCanvas.width = rect.right - rect.left || 0;
     this._sourceCanvas.height = rect.bottom - rect.top || 0;
@@ -102,7 +98,7 @@ var SourceEditor = React.createClass({
    *                             (error, matches)
    *
    */
-  getMatches: function(text, callback) {
+  getMatches: function (text, callback) {
     // 1. Validate with lexing
     var pattern = this.props.pattern;
     var flags = this.props.flags;
@@ -126,39 +122,41 @@ var SourceEditor = React.createClass({
     }
   },
 
-  redraw: function(text) {
+  redraw: function (text) {
     text = text || this.props.text;
 
     // Redraw source highlights
-    this.getMatches(text, function(error, matches) {
-      var hoverX = this.state.hoverX;
-      var hoverY = this.state.hoverY;
-      var hoverMatch = null;
+    this.getMatches(
+      text,
+      function (error, matches) {
+        var hoverX = this.state.hoverX;
+        var hoverY = this.state.hoverY;
+        var hoverMatch = null;
 
-      if (!error && hoverX && hoverY) {
-        var cm = this._cmElem.getCodeMirror();
-        // Check what index character we're hovering over
-        var index = CMUtils.getCharIndexAt(cm, hoverX, hoverY);
+        if (!error && hoverX && hoverY) {
+          var cm = this._cmElem.getCodeMirror();
+          // Check what index character we're hovering over
+          var index = CMUtils.getCharIndexAt(cm, hoverX, hoverY);
 
-        // See which match, if any, we're hovering over
-        hoverMatch = index != null ? RegexUtils.getMatchAt(matches, index) : null;
+          // See which match, if any, we're hovering over
+          hoverMatch = index != null ? RegexUtils.getMatchAt(matches, index) : null;
 
-        if (hoverMatch) {
-          var rect = (index != null) && CMUtils.getCharRect(cm, index);
-          if (rect) {
-            rect.right = rect.left = hoverX;
+          if (hoverMatch) {
+            var rect = index != null && CMUtils.getCharRect(cm, index);
+            if (rect) {
+              rect.right = rect.left = hoverX;
+            }
+            this.sourceTooltip.show(Docs.forMatch(hoverMatch), rect);
+          } else {
+            this.sourceTooltip.hide();
           }
-          this.sourceTooltip.show(Docs.forMatch(hoverMatch), rect);
-        } else {
-          this.sourceTooltip.hide();
         }
-      }
 
-      this.sourceHighlighter.draw(error ? null : matches,
-        hoverMatch, null);
+        this.sourceHighlighter.draw(error ? null : matches, hoverMatch, null);
 
-      this.sendOnViewportChange(matches);
-    }.bind(this));
+        this.sendOnViewportChange(matches);
+      }.bind(this)
+    );
   },
 
   /**
@@ -169,7 +167,7 @@ var SourceEditor = React.createClass({
    *         prevMatch, nextMatch are the indexes of the
    *         first match before and after the visible section
    */
-  sendOnViewportChange: function(matches) {
+  sendOnViewportChange: function (matches) {
     if (!this.props.onViewportChange) return;
 
     var cm = this._cmElem.getCodeMirror();
@@ -202,7 +200,7 @@ var SourceEditor = React.createClass({
         firstChar: firstChar,
         lastChar: lastChar,
         prevMatch: prevMatch,
-        nextMatch: nextMatch
+        nextMatch: nextMatch,
       };
 
       this.props.onViewportChange(ret);
@@ -211,34 +209,34 @@ var SourceEditor = React.createClass({
     if (matches) {
       processMatches(matches);
     } else {
-      this.getMatches(this.props.text, function(error, matches) {
+      this.getMatches(this.props.text, function (error, matches) {
         processMatches(matches);
       });
     }
   },
 
-  handleCMChange: function(text) {
+  handleCMChange: function (text) {
     this.props.onTextChange(text);
   },
 
-  handleCMScroll: function() {
+  handleCMScroll: function () {
     this.redraw();
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     // Redraw with slight delay so that it's
     // based on new content
     setTimeout(this.redraw, 1);
   },
 
-  handleMouseMove: function(event) {
+  handleMouseMove: function (event) {
     this.setState({
       hoverX: event.clientX,
-      hoverY: event.clientY
+      hoverY: event.clientY,
     });
   },
 
-  handleMouseOut: function() {
+  handleMouseOut: function () {
     this.setState({ hoverX: null, hoverY: null });
   },
 
@@ -247,25 +245,25 @@ var SourceEditor = React.createClass({
    * (does nothing if the nth match doesn't exist)
    * @param {int} matchIndex    index of the match
    */
-  scrollToMatch: function(matchIndex) {
+  scrollToMatch: function (matchIndex) {
     var cm = this._cmElem.getCodeMirror();
-    this.getMatches(this.props.text, function(error, matches) {
+    this.getMatches(this.props.text, function (error, matches) {
       var match = matches[matchIndex];
 
       if (match) {
         cm.scrollIntoView({
           from: cm.posFromIndex(match.index),
-          to: cm.posFromIndex(match.end)
+          to: cm.posFromIndex(match.end),
         });
       }
     });
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   },
 
-  render: function() {
+  render: function () {
     var text = this.props.text;
     var options = this.props.options;
     var containerStyle = this.props.containerStyle;
@@ -274,26 +272,44 @@ var SourceEditor = React.createClass({
     var height = this.props.height || 'auto';
     var style = { width: width, height: height };
 
-    return (<div style={Object.assign(style, containerStyle)}>
-      <canvas className="regexr-source-canvas" width="1" height="1"
-          ref={function(elem) { this._sourceCanvas = elem; }.bind(this)}></canvas>
+    return (
+      <div style={Object.assign(style, containerStyle)}>
+        <canvas
+          className="regexr-source-canvas"
+          width="1"
+          height="1"
+          ref={function (elem) {
+            this._sourceCanvas = elem;
+          }.bind(this)}
+        ></canvas>
 
-      <div className="regexr-source-measure"
+        <div
+          className="regexr-source-measure"
           style={style}
-          ref={function(elem) { this._sourceMeasure = elem; }.bind(this)}>
-        <CodeMirror
+          ref={function (elem) {
+            this._sourceMeasure = elem;
+          }.bind(this)}
+        >
+          <CodeMirror
             className="regexr-source-editor"
             onChange={this.handleCMChange}
             value={text}
-            options={Object.assign({
-              tabSize: 2,
-              indentWithTabs: false,
-              readOnly: !this.props.onTextChange
-            }, options)}
+            options={Object.assign(
+              {
+                tabSize: 2,
+                indentWithTabs: false,
+                readOnly: !this.props.onTextChange,
+              },
+              options
+            )}
             onScroll={this.handleCMScroll}
-            ref={function(elem) { this._cmElem = elem; }.bind(this)} />
+            ref={function (elem) {
+              this._cmElem = elem;
+            }.bind(this)}
+          />
+        </div>
       </div>
-    </div>);
+    );
   },
 });
 

@@ -1,3 +1,5 @@
+/** @format */
+
 'use strict';
 
 var PropTypes = require('prop-types');
@@ -16,17 +18,11 @@ var PatternEditor = React.createClass({
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 
-    width: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),  // Defaults to 100%
-    height: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ])   // Defaults to auto
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to 100%
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to auto
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     var elem = this._cmElem;
 
     var cm = elem.getCodeMirror();
@@ -36,7 +32,7 @@ var PatternEditor = React.createClass({
 
     // Copied from regexr code:
     // Hacky method to disable overwrite mode on expressions to avoid overwriting flags
-    cm.toggleOverwrite = function() {};
+    cm.toggleOverwrite = function () {};
 
     this._cmElem = elem;
     this._expressionHighlighter = new ExpressionHighlighter(cm);
@@ -45,37 +41,40 @@ var PatternEditor = React.createClass({
     this.updateCodeMirror(this.props.value);
   },
 
-  updateCodeMirror: function(pattern) {
+  updateCodeMirror: function (pattern) {
     var parsed = RegexUtils.parsePattern(pattern);
 
     this._expressionHighlighter.draw(parsed.tree);
     this._expressionHover.token = parsed.token;
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     this.updateCodeMirror(this.props.value);
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate: function (nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   },
 
-  render: function() {
+  render: function () {
     var value = this.props.value;
 
     return (
       <CodeMirror
-          className="regexr regexr-expression-editor"
-          value={value}
-          onChange={this.props.onChange}
-          options={{
-            lineNumbers: false,
-            tabSize: 2,
-            indentWithTabs: false,
-            placeholder: '(Type a regular expression)',
-            lineWrapping: true
-          }}
-          ref={function(elem) { this._cmElem = elem; }.bind(this)} />
+        className="regexr regexr-expression-editor"
+        value={value}
+        onChange={this.props.onChange}
+        options={{
+          lineNumbers: false,
+          tabSize: 2,
+          indentWithTabs: false,
+          placeholder: '(Type a regular expression)',
+          lineWrapping: true,
+        }}
+        ref={function (elem) {
+          this._cmElem = elem;
+        }.bind(this)}
+      />
     );
   },
 });
