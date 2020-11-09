@@ -7,6 +7,9 @@
     "build": "babel src -d lib",
     "dev": "webpack-dev-server --content-base build/"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pxpeterxu/react-regexr.git"
