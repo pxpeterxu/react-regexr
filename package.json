@@ -24,7 +24,7 @@
   "homepage": "https://github.com/pxpeterxu/react-regexr#readme",
   "dependencies": {
     "codemirror": "~5",
-    "react": "^15.4.2",
+    "react": "^15.6.2",
     "react-addons-shallow-compare": "^15.6.2",
     "react-bootstrap": "0.29",
     "react-codemirror": "~0.3",
@@ -58,7 +58,7 @@
     "gulp-watch": "^4.3.5",
     "minifyify": "^7.3.2",
     "node-sass": "^4.5.0",
-    "react-dom": "^15.4.2",
+    "react-dom": "^15.6.2",
     "run-sequence": "^1.1.5",
     "sass-loader": "^6.0.3",
     "vinyl-buffer": "^1.0.0",
