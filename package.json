@@ -24,10 +24,11 @@
   },
   "dependencies": {
     "codemirror": "~5",
+    "preact": "^10.5.5",
     "react": "^15.6.2",
     "react-addons-shallow-compare": "^15.6.2",
-    "react-bootstrap": "0.29",
-    "react-codemirror": "~0.3",
+    "react-bootstrap": "0.31.5",
+    "react-codemirror": "~1.0.0",
     "regexr-site": "pxpeterxu/regexr"
   },
   "devDependencies": {
@@ -61,6 +62,7 @@
     "minifyify": "^7.3.2",
     "node-sass": "^4.5.0",
     "prettier": "^2.1.2",
+    "prop-types": "^15.7.2",
     "react-dom": "^15.6.2",
     "run-sequence": "^1.1.5",
     "sass-loader": "^6.0.3",

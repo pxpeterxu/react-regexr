@@ -30,6 +30,12 @@ module.exports = {
       loader: 'file-loader?name=fonts/[name].[ext]'
     }]
   },
+  resolve: {
+    alias: {
+      react: 'preact/compat',
+      'react-dom': 'preact/compat'
+    }
+  },
   plugins: [
     new ExtractTextPlugin({
       filename: 'styles.css',
