@@ -10,25 +10,18 @@ var shallowCompare = require('react-addons-shallow-compare');
 var Overlay = require('react-bootstrap/lib/Overlay');
 var Tooltip = require('./Tooltip');
 
-var FlagsEditor = React.createClass({
-  propTypes: {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  },
+class FlagsEditor extends React.Component {
+  state = { showMenu: false };
 
-  getInitialState: function () {
-    return { showMenu: false };
-  },
-
-  componentDidMount: function () {
+  componentDidMount() {
     this._keydownListener = document.addEventListener('keydown', this.handleKeyDown);
-  },
+  }
 
-  componentWillUnmount: function () {
+  componentWillUnmount() {
     document.removeEventListener('keydown', this._keydownListener);
-  },
+  }
 
-  toggleFlag: function (flag, e) {
+  toggleFlag = (flag, e) => {
     if (e) e.preventDefault();
     var flags = this.props.value;
 
@@ -39,30 +32,30 @@ var FlagsEditor = React.createClass({
     }
 
     this.props.onChange(flags);
-  },
+  };
 
-  toggleShowMenu: function (e) {
+  toggleShowMenu = (e) => {
     e.preventDefault();
     this.setState({ showMenu: !this.state.showMenu });
-  },
+  };
 
-  hideMenu: function () {
+  hideMenu = () => {
     this.setState({ showMenu: false });
-  },
+  };
 
-  handleKeyDown: function (e) {
+  handleKeyDown = (e) => {
     if (this.state.showMenu) {
       if (e.key && 'gim'.indexOf(e.key) !== -1) {
         this.toggleFlag(e.key);
       }
     }
-  },
+  };
 
-  shouldComponentUpdate: function (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
-  },
+  }
 
-  render: function () {
+  render() {
     var flags = this.props.value;
     var showMenu = this.state.showMenu;
 
@@ -116,7 +109,12 @@ var FlagsEditor = React.createClass({
         </Overlay>
       </div>
     );
-  },
-});
+  }
+}
+
+FlagsEditor.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 module.exports = FlagsEditor;

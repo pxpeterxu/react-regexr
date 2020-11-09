@@ -10,23 +10,12 @@ var shallowCompare = require('react-addons-shallow-compare');
 var PatternEditor = require('./PatternEditor');
 var FlagsEditor = require('./FlagsEditor');
 
-var ExpressionEditor = React.createClass({
-  propTypes: {
-    pattern: PropTypes.string.isRequired,
-    flags: PropTypes.string.isRequired,
-
-    onPatternChange: PropTypes.func.isRequired,
-    onFlagsChange: PropTypes.func.isRequired,
-
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to 100%
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to auto
-  },
-
-  shouldComponentUpdate: function (nextProps, nextState) {
+class ExpressionEditor extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
-  },
+  }
 
-  render: function () {
+  render() {
     return (
       <div className="regexr regexr-expression">
         <div className="regexr-left">/</div>
@@ -43,7 +32,18 @@ var ExpressionEditor = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+ExpressionEditor.propTypes = {
+  pattern: PropTypes.string.isRequired,
+  flags: PropTypes.string.isRequired,
+
+  onPatternChange: PropTypes.func.isRequired,
+  onFlagsChange: PropTypes.func.isRequired,
+
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to 100%
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Defaults to auto
+};
 
 module.exports = ExpressionEditor;
