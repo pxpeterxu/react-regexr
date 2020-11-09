@@ -35,6 +35,7 @@
     "babel-cli": "^6.24.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.4.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babelify": "^7.2.0",
